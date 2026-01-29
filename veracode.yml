@@ -1,3 +1,4 @@
 veracode_static_scan:
+  create_issue: true
   use_custom_workflow: veracode-build
   artifact_file: maven-build
