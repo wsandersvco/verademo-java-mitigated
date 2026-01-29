@@ -33,28 +33,23 @@ jobs:
       if: success()
       uses: actions/upload-artifact@v4
       with:
-        name: maven-build
-        path: app/target/*.war
+        name: veracode-artifact
+        path: app/target/verademo.war
         retention-days: 3
 
-  register:
-    needs: build
-    runs-on: ubuntu-latest
-    name: register
-    steps:
-      - name: Register build
-        id: register-build
-        uses: veracode/github-actions-integration-helper@v0.1.9
-        with:
-          action: registerBuild
-          vid: ${{ secrets.VERACODE_API_ID }}
-          vkey: ${{ secrets.VERACODE_API_KEY }}
-          token: ${{ github.event.client_payload.token }}
-          appname: ${{ github.event.client_payload.user_config.profile_name }}
-          source_repository: ${{ github.event.client_payload.repository.full_name }}
-          check_run_id: ${{ github.run_id }}
-          check_run_name: ${{ github.workflow }}
-          head_sha: ${{ github.event.client_payload.sha }}
-          event_type: ${{ github.event.client_payload.event_type }}
-          branch: ${{ github.event.client_payload.user_config.sandbox_scan.branch }}
-          issue_trigger_flow: ${{ github.event.client_payload.user_config.issue_trigger_flow }}
+    - name: Register build
+      id: register-build
+      uses: veracode/github-actions-integration-helper@v0.1.9
+      with:
+        action: registerBuild
+        vid: ${{ secrets.VERACODE_API_ID }}
+        vkey: ${{ secrets.VERACODE_API_KEY }}
+        token: ${{ github.event.client_payload.token }}
+        appname: ${{ github.event.client_payload.user_config.profile_name }}
+        source_repository: ${{ github.event.client_payload.repository.full_name }}
+        check_run_id: ${{ github.run_id }}
+        check_run_name: ${{ github.workflow }}
+        head_sha: ${{ github.event.client_payload.sha }}
+        event_type: ${{ github.event.client_payload.event_type }}
+        branch: ${{ github.event.client_payload.user_config.sandbox_scan.branch }}
+        issue_trigger_flow: ${{ github.event.client_payload.user_config.issue_trigger_flow }}
