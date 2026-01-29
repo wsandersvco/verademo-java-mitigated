@@ -1,0 +1,59 @@
+name: Build with Maven
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [veracode-build]
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v6
+      
+    - name: Set up JDK 11
+      uses: actions/setup-java@v5
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        cache: 'maven'
+        
+    - name: Set up Maven 3
+      uses: stCarolas/setup-maven@v5
+      with:
+        maven-version: 3.9.5
+        
+    - name: Build with Maven (skip tests)
+      run: mvn -B clean package -DskipTests --file pom.xml
+      
+    - name: Upload build artifacts
+      if: success()
+      uses: actions/upload-artifact@v6
+      with:
+        name: maven-build
+        path: target/*.war
+        retention-days: 3
+
+  register:
+    runs-on: ubuntu-latest
+    name: register
+    steps:
+      - name: Register build
+        id: register-build
+        uses: veracode/github-actions-integration-helper@v0.1.9
+        with:
+          action: registerBuild
+          vid: ${{ secrets.VERACODE_API_ID }}
+          vkey: ${{ secrets.VERACODE_API_KEY }}
+          token: ${{ github.event.client_payload.token }}
+          appname: ${{ github.event.client_payload.user_config.profile_name }}
+          source_repository: ${{ github.event.client_payload.repository.full_name }}
+          check_run_id: ${{ github.run_id }}
+          check_run_name: ${{ github.workflow }}
+          head_sha: ${{ github.event.client_payload.sha }}
+          event_type: ${{ github.event.client_payload.event_type }}
+          branch: ${{ github.event.client_payload.user_config.sandbox_scan.branch }}
+          issue_trigger_flow: ${{ github.event.client_payload.user_config.issue_trigger_flow }}
