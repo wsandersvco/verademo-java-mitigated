@@ -31,7 +31,7 @@ jobs:
       
     - name: Upload build artifacts
       if: success()
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v4
       with:
         name: maven-build
         path: app/target/*.war
