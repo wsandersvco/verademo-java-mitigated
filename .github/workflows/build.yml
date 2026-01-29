@@ -38,6 +38,7 @@ jobs:
         retention-days: 3
 
   register:
+    needs: build
     runs-on: ubuntu-latest
     name: register
     steps:
