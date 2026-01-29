@@ -27,14 +27,14 @@ jobs:
         maven-version: 3.9.5
         
     - name: Build with Maven (skip tests)
-      run: mvn -B clean package -DskipTests --file pom.xml
+      run: mvn -B clean package -DskipTests --file app/pom.xml
       
     - name: Upload build artifacts
       if: success()
       uses: actions/upload-artifact@v6
       with:
         name: maven-build
-        path: target/*.war
+        path: app/target/*.war
         retention-days: 3
 
   register:
