@@ -1,8 +1,13 @@
 name: Build with Maven
 
 on:
+  workflow_dispatch:
   repository_dispatch:
     types: [veracode-build]
+
+env:
+  ARTIFACT_NAME: maven-build
+  ARTIFACT_PATH: app/target/*.war
 
 jobs:
   build:
@@ -34,14 +39,15 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: maven-build
-          path: app/target/*.war
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ${{ env.ARTIFACT_PATH }}
           retention-days: 3
 
   register:
     needs: build
     runs-on: ubuntu-latest
     name: register
+    if: github.event_name == 'repository_dispatch' && github.event.action == 'veracode-build'
     steps:
       - name: Register build
         id: register-build
