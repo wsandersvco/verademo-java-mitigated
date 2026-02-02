@@ -7,15 +7,9 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout repo
-        uses: actions/checkout@v6
-        
-      - name: build
-        uses: ./.github/workflows/build.yml
-        with:
-          artifact_name: ${{ env.BUILD_ARTIFACT_NAME }}
+    uses: ./.github/workflows/build.yml
+    with:
+      artifact_name: maven-build
 
   pipeline_scan:
     needs: build
