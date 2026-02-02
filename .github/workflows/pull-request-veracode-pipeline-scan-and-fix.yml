@@ -55,7 +55,7 @@ jobs:
         id: convert
         uses: Veracode/veracode-fix@v1.0.4
         with:
-          access_token: ${{ github.token }}
+          access_token: ${{ secrets.VERACODE_FIX_PAT }}
           inputFile: filtered_results.json
           vid: ${{ secrets.VID }}
           vkey: ${{ secrets.VKEY }}
@@ -63,4 +63,6 @@ jobs:
           source_base_path_2: "WEB-INF:app/src/main/webapp/WEB-INF"
           language: java
           prComment: true
-          fixType: single
+          fixType: batch
+          createPR: true
+          debug: true
