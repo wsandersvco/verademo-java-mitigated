@@ -1,6 +1,6 @@
 name: Veracode Pipeline Scan And Single Fix
 
-on: [pull_request]
+on: pull_request
 
 env:
   ARTIFACT_NAME: maven-build
