@@ -1,18 +1,12 @@
 name: Build with Maven
 
 on:
-  workflow_dispatch:
-  workflow_call:
-    inputs:
-      artifact_name:
-        default: maven-build
-        required: false
-        type: string
   repository_dispatch:
     types: [veracode-build]
 
 env:
-  artifact_name: ${{ inputs.artifact_name || 'maven-build' }}
+  ARTIFACT_NAME: maven-build
+  ARTIFACT_PATH: app/target/*.war
 
 jobs:
   build:
@@ -44,8 +38,8 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.artifact_name }}
-          path: app/target/*.war
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ${{ env.ARTIFACT_PATH }}
           retention-days: 3
 
   register:
