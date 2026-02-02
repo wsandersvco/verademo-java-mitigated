@@ -46,7 +46,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     name: register
-    if: github.event_name == 'repository_dispatch' && github.event.action == 'veracode-build'
+    if: ${{ github.event_name == 'repository_dispatch' && github.event.action == 'veracode-build' }}
     steps:
       - name: Register build
         id: register-build
