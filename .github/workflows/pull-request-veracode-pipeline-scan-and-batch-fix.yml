@@ -3,13 +3,42 @@ name: Veracode Pipeline Scan And Batch Fix
 on: workflow_dispatch
 
 env:
-  BUILD_ARTIFACT_NAME: maven-build
+  ARTIFACT_NAME: maven-build
+  ARTIFACT_PATH: app/target/*.war
 
 jobs:
   build:
-    uses: ./.github/workflows/build.yml
-    with:
-      artifact_name: maven-build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up JDK 8
+        uses: actions/setup-java@v5
+        with:
+          java-version: "8"
+          distribution: "temurin"
+          cache: "maven"
+          settings-path: ${{ github.workspace }}
+
+      - name: Cache Maven packages
+        uses: actions/cache@v5
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+
+      - name: Build with Maven (skip tests)
+        working-directory: app
+        run: mvn -B clean package -DskipTests --file pom.xml
+
+      - name: Upload build artifacts
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ${{ env.ARTIFACT_PATH }}
+          retention-days: 3
 
   pipeline_scan:
     needs: build
@@ -22,7 +51,7 @@ jobs:
       - name: get archive
         uses: actions/download-artifact@v6
         with:
-          name: ${{ env.BUILD_ARTIFACT_NAME }}
+          name: ${{ env.ARTIFACT_NAME }}
 
       - name: pipeline-scan action step
         id: pipeline-scan
