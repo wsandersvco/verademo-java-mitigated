@@ -1,4 +1,4 @@
-on: [pull_request]
+on: workflow_dispatch
 
 jobs:
   build:
@@ -82,30 +82,3 @@ jobs:
         with:
           sarif_file: veracode-results.sarif
           category: pipeline-scan
-          
-  # veracode-fix:
-  #   runs-on: ubuntu-latest
-  #   needs: pipeline_scan
-  #   name: Veracode Fix
-  #   steps:
-  #     - name: checkout repo
-  #       uses: actions/checkout@v6
-  
-  #     - name: get flaw file
-  #       uses: actions/download-artifact@v6
-  #       with:
-  #         name: Veracode Pipeline-Scan Results
-          
-  #     - name: Create fixes from static findings
-  #       id: convert
-  #       uses: Veracode/veracode-fix@main
-  #       with:
-  #         access_token: ${{ github.token }}
-  #         inputFile: filtered_results.json
-  #         vid: ${{ secrets.VID }}
-  #         vkey: ${{ secrets.VKEY }}
-  #         source_base_path_1: "com/:app/src/main/java/com/"
-  #         source_base_path_2: "WEB-INF:app/src/main/webapp/WEB-INF"
-  #         language: java
-  #         prComment: true
-  #         fixType: single
