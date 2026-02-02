@@ -9,6 +9,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: checkout repo
+        uses: actions/checkout@v6
+        
       - name: build
         uses: ./.github/workflows/build.yml
         with:
