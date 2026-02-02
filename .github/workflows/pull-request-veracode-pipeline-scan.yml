@@ -1,3 +1,5 @@
+name: Veracode Pipeline Scan
+
 on: [workflow_dispatch, pull_request]
 
 env:
