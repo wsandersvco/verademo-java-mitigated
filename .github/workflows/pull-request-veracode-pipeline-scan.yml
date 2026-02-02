@@ -9,10 +9,8 @@ jobs:
       with:
         distribution: 'zulu'
         java-version: 8
- 
-    - name: Build with Maven
-      run: mvn clean package
-      working-directory: ./app
+        
+
     - uses: actions/upload-artifact@v6
       with:
           name: verademo.war
