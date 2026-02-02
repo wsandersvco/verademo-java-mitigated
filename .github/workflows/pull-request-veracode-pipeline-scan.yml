@@ -64,11 +64,6 @@ jobs:
           debug: 1
           fail_build: false
 
-      # - uses: actions/upload-artifact@v6
-      #   with:
-      #     name: Veracode Pipeline-Scan Results
-      #     path: results.json
-
   results_to_sarif:
     needs: pipeline_scan
     runs-on: ubuntu-latest
