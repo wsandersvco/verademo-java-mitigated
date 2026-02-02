@@ -1,0 +1,71 @@
+name: Veracode Pipeline Scan And Single Fix
+
+on: [pull_request]
+
+env:
+  BUILD_ARTIFACT_NAME: maven-build
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v6
+        
+      - name: build
+        uses: ./.github/workflows/build.yml
+        with:
+          artifact_name: ${{ env.BUILD_ARTIFACT_NAME }}
+
+  pipeline_scan:
+    needs: build
+    runs-on: ubuntu-latest
+    name: Veracode Pipeline Scan
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v6
+
+      - name: get archive
+        uses: actions/download-artifact@v6
+        with:
+          name: ${{ env.BUILD_ARTIFACT_NAME }}
+
+      - name: pipeline-scan action step
+        id: pipeline-scan
+        uses: veracode/Veracode-pipeline-scan-action@esd-true
+        with:
+          vid: ${{ secrets.VID }}
+          vkey: ${{ secrets.VKEY }}
+          file: "verademo.war"
+          veracode_policy_name: "Veracode Recommended Very High"
+          debug: 1
+          fail_build: false
+
+  veracode-fix:
+    runs-on: ubuntu-latest
+    needs: pipeline_scan
+    name: Veracode Fix
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v6
+
+      - name: get flaw file
+        uses: actions/download-artifact@v6
+        with:
+          name: Veracode Pipeline-Scan Results
+          
+      - name: Create fixes from static findings
+        id: convert
+        uses: Veracode/veracode-fix@v1.0.4
+        with:
+          access_token: ${{ secrets.VERACODE_FIX_PAT }}
+          inputFile: filtered_results.json
+          vid: ${{ secrets.VID }}
+          vkey: ${{ secrets.VKEY }}
+          source_base_path_1: "com/:app/src/main/java/com/"
+          source_base_path_2: "WEB-INF:app/src/main/webapp/WEB-INF"
+          language: java
+          prComment: true
+          fixType: single
+          createPR: false
+          debug: true
