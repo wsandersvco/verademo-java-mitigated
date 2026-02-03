@@ -31,6 +31,7 @@ jobs:
           debug: true
           allow-dirty: true
           recursive: true
+          update_advisor: true
 
       - name: Display scan URL
         env:
