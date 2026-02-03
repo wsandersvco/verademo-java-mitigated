@@ -1,0 +1,15 @@
+name: Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-linux:
+    uses: wsandersvc/actions/.github/workflows/veracode-package-build.yml@main
+    secrets: inherit
+  build-windows:
+    uses: wsandersvc/actions/.github/workflows/veracode-package-build.yml@main
+    secrets: inherit
+    with:
+      build_runs_on: windows-latest
+      
