@@ -2,10 +2,6 @@ name: Build
 
 on:
   workflow_dispatch:
-    inputs:
-      build_runs_on:
-        default: ubuntu-latest
-        required: true
 
 jobs:
   build-linux:
@@ -18,4 +14,3 @@ jobs:
     secrets: inherit
     with:
       build_runs_on: windows-latest
-      
