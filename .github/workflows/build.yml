@@ -2,12 +2,18 @@ name: Build
 
 on:
   workflow_dispatch:
+    inputs:
+      build_runs_on:
+        default: ubuntu-latest
+        required: true
 
 jobs:
   build-linux:
+    if: always()
     uses: wsandersvc/actions/.github/workflows/veracode-package-build.yml@main
     secrets: inherit
   build-windows:
+    if: always()
     uses: wsandersvc/actions/.github/workflows/veracode-package-build.yml@main
     secrets: inherit
     with:
