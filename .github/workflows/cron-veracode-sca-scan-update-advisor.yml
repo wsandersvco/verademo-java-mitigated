@@ -32,9 +32,3 @@ jobs:
           allow-dirty: true
           recursive: true
           update_advisor: true
-
-      - name: Display scan URL
-        env:
-          SCAN_URL: ${{ toJson(steps.veracode-sca.outputs.scan-url) }}
-        run: |
-          echo "View detailed report at: ${{ env.SCAN_URL }}"
