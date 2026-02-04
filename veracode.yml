@@ -1,4 +1,19 @@
 veracode_static_scan:
+  push:
+    trigger: true
+    # Please only specify either branches_to_run or branches_to_exclude
+    # Entering both will only execute branches_to_run
+    # Leaving them both blank means this will never run
+    branches_to_run:
+      - '*'
+    branches_to_exclude:
+  pull_request:
+    trigger: true
+    action:
+      - opened
+      - synchronize
+    target_branch:
+      - default_branch 
   create_issue: true
   analysis_on_platform: true
   use_custom_workflow: veracode-build
