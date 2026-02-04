@@ -16,5 +16,5 @@ veracode_static_scan:
       - default_branch 
   create_issue: true
   analysis_on_platform: true
-  use_custom_workflow: veracode-build
-  artifact_file: maven-build
+  # use_custom_workflow: veracode-build
+  # artifact_file: maven-build
