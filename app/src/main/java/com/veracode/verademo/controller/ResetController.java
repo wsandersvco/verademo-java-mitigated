@@ -12,7 +12,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Random;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import com.veracode.verademo.utils.Constants;
 import com.veracode.verademo.utils.User;
