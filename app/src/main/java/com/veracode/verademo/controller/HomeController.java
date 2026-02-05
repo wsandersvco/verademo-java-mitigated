@@ -1,7 +1,7 @@
 package com.veracode.verademo.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import com.veracode.verademo.utils.Utils;
 
