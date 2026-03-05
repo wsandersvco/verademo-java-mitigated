@@ -8,14 +8,13 @@ veracode_static_scan:
       - '*'
     branches_to_exclude:
   pull_request:
-    trigger: true
+    trigger: false
     action:
       - opened
       - synchronize
     target_branch:
       - default_branch
-      - feature2
   create_issue: true
-  analysis_on_platform: false
+  analysis_on_platform: true
   # use_custom_workflow: veracode-build
   # artifact_file: maven-build
