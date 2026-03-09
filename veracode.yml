@@ -1,6 +1,6 @@
 veracode_static_scan:
   push:
-    trigger: false
+    trigger: true
     # Please only specify either branches_to_run or branches_to_exclude
     # Entering both will only execute branches_to_run
     # Leaving them both blank means this will never run
@@ -16,5 +16,5 @@ veracode_static_scan:
       - default_branch
   create_issue: true
   analysis_on_platform: true
-  use_custom_workflow: register-build
-  artifact_file: maven-build
+  # use_custom_workflow: register-build
+  # artifact_file: maven-build
