@@ -3,7 +3,7 @@ name: Build with Maven
 on:
   workflow_dispatch:
   repository_dispatch:
-    types: [veracode-build]
+    types: [register-build]
 
 env:
   ARTIFACT_NAME: maven-build
@@ -44,10 +44,10 @@ jobs:
           retention-days: 3
 
   register:
-    needs: build
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON(github.event.client_payload.user_config.default_runs_on) }}
     name: register
-    if: github.event_name == 'repository_dispatch' && github.event.action == 'veracode-build'
+    if: github.event_name == 'repository_dispatch' && github.event.action == 'register-build'
+    needs: build
     steps:
       - name: Register build
         id: register-build
