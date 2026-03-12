@@ -1,6 +1,6 @@
 # VeraDemo - Blab-a-Gag
 
-**Version**: 1.1.6 (update to trigger scan)
+**Version**: 1.1.7 (update to trigger scan)
 
 ### :information_source: Notice
 
